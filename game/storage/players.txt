@@ -1,0 +1,24 @@
+Striker: Brian Bantu
+Defender: Allan Kamau
+Striker: Joel Amos
+Defender: John Paul
+Striker: John Eliud Odhiambo
+Defender: David Ochiel
+Striker: Samuel Omulo
+Defender: Franklyne Namayi
+Striker: Bernard Okumu
+Defender: Denil Anyonyi
+Striker: Jesse Omolo
+Defender: Seth Athooh
+Striker: Hillary Ombima
+Defender: Vincent Omondi
+Striker: Antony Musumba
+Defender: Fred Munene
+Striker: Doreen Onyango
+Defender: Benard Opiyo
+Striker: Kevin Wasonga
+Defender: Maurice Ombewa
+Striker: Bravian Nyatoro
+Defender: Andrew Osindo
+Striker: Quinter Ochieng
+Defender: Brian Shisia
