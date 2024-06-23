@@ -8,7 +8,9 @@ import (
 	"time"
 )
 
-func FetchContent(url string, filename string) error {
+func FetchContent() error {
+	url := "https://bravian1.github.io/players/players.txt"
+	filename := "./storage/players.txt"
 	// create the file
 	file, err := os.Create(filename)
 	if err != nil {

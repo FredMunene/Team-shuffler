@@ -2,34 +2,69 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"sync"
+
 	"learn-go/src/core"
-	"os"
-	"path"
+	handler "learn-go/src/routes"
+)
+
+const (
+	PORT = 8765
+	HOST = "localhost"
+	APP  = "Team Management App"
 )
 
 func main() {
-	url := "https://raw.githubusercontent.com/FredMunene/ascii-art/main/ascii-art-fs/shadow.txt"
-	filename := "./storage/ascii.art"
-
-	core.FetchContent(url, filename)
-
-	fmt.Println(os.Getwd())
-}
-
-
-func CreateOrOpenFile(filename string)(string, bool){
-	rootDir, err := os.Getwd()
+	// create a Players file with all players
+	err := core.FetchContent()
 	if err != nil {
-		return "Error accessing directory...", false
+		log.Fatal(err)
 	}
 
-	filename = path.Join(rootDir,"storage",filename)
-
-	file, err := os.Create(filename)
-	if err != nil {
-		return fmt.Sprintf("Error to create \n",filename),false
+	// create a TEAMS file
+	result, success := core.CreateFile("teams.csv")
+	if !success {
+		log.Fatalf(result)
 	}
 
-	defer file.Close()
-	return filename,true
+	// specifing Host and Port setting (manual)
+	port := PORT
+	host := HOST
+	app := APP
+
+	//
+	config, success := core.ReadConfig()
+	if !success {
+		fmt.Printf("\t\t[[Unable to read configuration file. Using default port: %d]]\n\n", PORT)
+	} else {
+		// sets default values to retrieved values from configuration file
+		port = config.HostPort
+		host = config.HostName
+		app = config.AppName
+	}
+
+	 url := fmt.Sprintf("%s:%d", host, port)
+
+	 mutex := &sync.Mutex{}
+
+	http.HandleFunc("/home", handler.Home)
+	http.HandleFunc("/", handler.Home)
+
+	// serve static files
+	// http.Dir creates an object to represent the static directory on fs
+	// http.FileServer takes Dir object and returns a 'http.Handler' that serves files from directory 'dir'
+	// http.StripPrefix strips the prefix from the request URL i.e "static/file.txt" translates to "file.txt"
+	// still inside "static" dir
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
+	//routes
+	http.HandleFunc("/rules", handler.RulesHandler)
+	http.HandleFunc("/table", handler.Table)
+	http.HandleFunc("/playerlist",handler.PlayerlistHandler)
+	http.HandleFunc("/players", handler.Players)
+	http.Handle("/fixtures", handler.Fixtures)
+
+
 }
