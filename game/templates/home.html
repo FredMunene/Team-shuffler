@@ -92,20 +92,28 @@
                     const row = document.createElement('tr');
                     const nameCell = document.createElement('td');
                     nameCell.textContent = table.teamname;
+
                     const playedCell = document.createElement('td');
                     playedCell.textContent = table.played;
+
                     const winsCell = document.createElement('td');
                     winsCell.textContent = table.wins;
+
                     const drawsCell = document.createElement('td');
                     drawsCell.textContent = table.draws;
+
                     const lossesCell = document.createElement('td');
                     lossesCell.textContent = table.losses;
+
                     const goalsforCell = document.createElement('td');
                     goalsforCell.textContent = table.goalsfor;
+
                     const goalsagainstCell = document.createElement('td');
                     goalsagainstCell.textContent = table.goalsagainst;
+
                     const pointsCell = document.createElement('td');
                     pointsCell.textContent = table.points;
+                    
                     row.appendChild(nameCell);
                     row.appendChild(playedCell);
                     row.appendChild(winsCell);

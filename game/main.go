@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	PORT = 8765
+	PORT = 5000
 	HOST = "localhost"
 	APP  = "Team Management App"
 )
