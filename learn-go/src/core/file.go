@@ -28,7 +28,51 @@ func CreateFile(filename string) (string, bool) {
 	return filename, true
 }
 
+func WriteStringToFile(mutex *sync.Mutex, fileName string, str string) bool {
+	// sync.Mutex ensures oly one goroutine can write to file at a time
+	rootDir, err := os.Getwd()
+	if err != nil {
+		return false
+	}
 
-func WriteStringToFile(mutex *sync.Mutex, fileName string,str string) bool {
-	return false
+	fileName = path.Join(rootDir, "storage", fileName)
+	// opens file for appending, and writing, permissions 0644 allow owner to read and write
+	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, 0o644)
+	if err != nil {
+		return false
+	}
+
+	defer file.Close()
+
+	mutex.Lock()
+	_, err = file.WriteString(str)
+	mutex.Unlock()
+
+	return err == nil
+}
+
+func WriteBytesToFile(mutex *sync.Mutex, fileName string, data []byte) bool {
+	rootDir, err := os.Getwd()
+	if err != nil {
+		return false
+	}
+
+	fileName = path.Join(rootDir, "storage", fileName)
+	//  changes size of the file/ clears contents
+	if err := os.Truncate(fileName, 0); err != nil {
+		return false
+	}
+
+	// open file with write permission
+	file, err := os.OpenFile(fileName, os.O_WRONLY, 0o644)
+	if err != nil {
+		return false
+	}
+
+	defer file.Close()
+	mutex.Lock()
+	_, err = file.Write(data)
+	mutex.Unlock()
+
+	return err == nil
 }
